@@ -1,6 +1,9 @@
 <template>
 	<div id="app">
 		<div v-if="appIsReady" class="main-wrapper container">
+			<header>
+				Body Monitor
+			</header>
 			<router-view class="view-wrapper"/>
 		</div>
 	</div>
@@ -96,6 +99,12 @@
 			background-color: $white;
 			border-radius: 5px;
 			box-shadow: 0px 0px 11px 3px $gray-darker;
+
+			header {
+				padding: 10px;
+				text-align: center;
+				font-size: 30px;
+			}
 
 			.view-wrapper {
 				padding: 10px;
