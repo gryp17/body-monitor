@@ -91,10 +91,11 @@
 
 	#app {
 		.main-wrapper {
-			margin-top: 10px;
+			margin-top: 15px;
 			padding: 0px;
 			background-color: $white;
 			border-radius: 5px;
+			box-shadow: 0px 0px 11px 3px $gray-darker;
 
 			.view-wrapper {
 				padding: 10px;
