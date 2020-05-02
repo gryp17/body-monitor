@@ -139,6 +139,7 @@
 		position: relative;
 
 		.form-control {
+			height: 45px;
 			padding: 20px 10px;
 			border-radius: 0px;
 			background-color: $gray-lighter;

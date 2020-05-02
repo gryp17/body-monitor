@@ -58,7 +58,7 @@
 				width: 14px;
 				height: 14px;
 				padding: 0 0 2px;
-				background: url('/img/icons/arrow.png');
+				background: url('/img/arrow.png');
 				background-size: 100%;
 				transform: rotate(90deg);
 				filter: brightness(30%);
@@ -72,9 +72,9 @@
 				width: 100%;
 				padding: 10px 30px 9px 5px;
 				border-radius: 2px;
-				border: 1px solid $blue;
-				color: $blue;
-				background-color: $gray;
+				border: 1px solid $gray;
+				color: $text-color;
+				background-color: $gray-lighter;
 				appearance: none;
 				outline: none;
 			}
