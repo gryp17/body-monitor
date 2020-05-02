@@ -5,7 +5,8 @@ export default {
 	state: {
 		errors: {
 			login: {},
-			signup: {}
+			signup: {},
+			addMeasurement: {}
 		}
 	},
 	mutations: {

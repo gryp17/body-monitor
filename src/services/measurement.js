@@ -7,5 +7,11 @@ export default {
 	},
 	getMeasurements() {
 		return API.get('/Measurement/getMeasurements');
+	},
+	addMeasurement(name, type) {
+		return API.post('/Measurement/addMeasurement', {
+			name,
+			type
+		});
 	}
 };

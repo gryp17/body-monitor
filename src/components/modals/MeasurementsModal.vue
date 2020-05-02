@@ -15,15 +15,23 @@
 				<div class="form-wrapper">
 					<FormInput
 						v-model="name"
+						:error="errors.name"
+						@focus="clearError"
 						type="text"
+						name="name"
 						floating-label
 						placeholder="Име (тегло, обиколка...)"
 					/>
 					<FormDropdown
 						v-model="type"
-						:options="types"
+						:options="unitTypes"
+						:error="errors.type"
+						@focus="clearError"
+						name="type"
 					/>
-					<FormButton>
+					<FormButton
+						:disabled="submitting"
+						@click="submit">
 						Добави
 					</FormButton>
 				</div>
@@ -37,7 +45,7 @@
 	import { mapState, mapActions } from 'vuex';
 	import BaseModal from '@/components/modals/BaseModal';
 
-	//const formName = 'signup';
+	const formName = 'addMeasurement';
 
 	export default {
 		components: {
@@ -46,19 +54,31 @@
 		data() {
 			return {
 				name: '',
-				type: 'aa',
-				types: {
-					aa: 'Избери',
-					bb: 'test',
-					cc: 'bla'
-				},
+				type: 0,
 				submitting: false
 			};
 		},
 		computed: {
 			...mapState('modals', {
 				visible: 'measurementsModalOpened'
-			})
+			}),
+			...mapState('forms', {
+				errors: (state) => state.errors[formName]
+			}),
+			...mapState('measurements', [
+				'units'
+			]),
+			unitTypes() {
+				const types = {
+					0: 'Мерна единица'
+				};
+
+				this.units.forEach((unit) => {
+					types[unit.id] = unit.name;
+				});
+
+				return types;
+			}
 		},
 		watch: {
 			/**
@@ -66,7 +86,7 @@
 			 */
 			visible(value) {
 				this.resetState();
-				//this.resetFormErrors(formName);
+				this.resetFormErrors(formName);
 			}
 		},
 		methods: {
@@ -78,8 +98,46 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			...mapActions('measurements', [
+				'addMeasurement'
+			]),
 			submit() {
+				if (this.submitting) {
+					return;
+				}
 
+				this.submitting = true;
+
+				const params = {
+					name: this.name,
+					type: this.type
+				};
+
+				this.addMeasurement(params).then((res) => {
+					const data = res.data;
+
+					if (data.success) {
+						this.hideMeasurementsModal();
+					} else if (data.error) {
+						this.setFormError({
+							...data.error,
+							form: formName
+						});
+					}
+
+					this.submitting = false;
+				});
+			},
+			/**
+			 * Clears the form error related to this input
+			 * @param {Object} e
+			 */
+			clearError(e) {
+				const field = e.target.name;
+				this.clearFormError({
+					form: formName,
+					field
+				});
 			},
 			/**
 			 * Resets the data/state back to it's default/initial value
@@ -98,6 +156,10 @@
 		.modal-dialog {
 			max-width: $max-width;
 			text-align: left;
+		}
+
+		.modal-body {
+			padding-top: 30px;
 		}
 
 		.form-wrapper {

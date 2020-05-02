@@ -8,6 +8,7 @@
 			<select
 				:value="value"
 				:name="name"
+				:class="{'has-error': error}"
 				v-on="{
 					...$listeners,
 					input: onInput
@@ -22,16 +23,26 @@
 				</option>
 			</select>
 		</div>
+
+		<FormInputError>
+			{{ error }}
+		</FormInputError>
 	</div>
 </template>
 
 <script>
+	import FormInputError from '@/components/forms/FormInputError';
+
 	export default {
+		components: {
+			FormInputError
+		},
 		props: {
 			label: String,
 			options: Object,
-			value: String,
-			name: String
+			value: [String, Number],
+			name: String,
+			error: String
 		},
 		methods: {
 			/**
@@ -77,6 +88,10 @@
 				background-color: $gray-lighter;
 				appearance: none;
 				outline: none;
+
+				&.has-error {
+					border-color: $red;
+				}
 			}
 		}
 	}

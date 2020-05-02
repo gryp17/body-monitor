@@ -39,6 +39,15 @@ export default {
 					message: `getMeasurements failed - ${error}`
 				});
 			});
+		},
+		addMeasurement(context, { name, type }) {
+			return MeasurementHttpService.addMeasurement(name, type).then((res) => {
+				return res;
+			}).catch((error) => {
+				Vue.toasted.global.apiError({
+					message: `addMeasurement failed - ${error}`
+				});
+			});
 		}
 	}
 };
