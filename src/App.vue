@@ -14,6 +14,7 @@
 	import { mapActions } from 'vuex';
 
 	import errorsMap from '@/filters/errorsMap';
+	import date from '@/filters/date';
 	import FormButton from '@/components/forms/FormButton';
 	import FormInput from '@/components/forms/FormInput';
 	import FormDropdown from '@/components/forms/FormDropdown';
@@ -21,6 +22,7 @@
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
 	Vue.filter('errorsMap', errorsMap);
+	Vue.filter('date', date);
 	Vue.component('FormButton', FormButton);
 	Vue.component('FormInput', FormInput);
 	Vue.component('FormDropdown', FormDropdown);

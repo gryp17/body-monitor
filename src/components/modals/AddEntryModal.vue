@@ -120,8 +120,10 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			...mapActions('measurements', [
+				'addMeasurementEntry'
+			]),
 			submit() {
-				/*
 				if (this.submitting) {
 					return;
 				}
@@ -129,15 +131,16 @@
 				this.submitting = true;
 
 				const params = {
-					name: this.name,
-					type: this.type
+					measurementId: this.measurementId,
+					date: this.$options.filters.date(this.date, 'YYYY-MM-DD HH:mm:ss'),
+					value: this.value
 				};
 
-				this.addMeasurement(params).then((res) => {
+				this.addMeasurementEntry(params).then((res) => {
 					const data = res.data;
 
 					if (data.success) {
-						this.hideMeasurementsModal();
+						this.hideAddEntryModal();
 					} else if (data.error) {
 						this.setFormError({
 							...data.error,
@@ -147,7 +150,6 @@
 
 					this.submitting = false;
 				});
-				*/
 			},
 			/**
 			 * Clears the form error related to this input

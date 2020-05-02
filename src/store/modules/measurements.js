@@ -51,6 +51,15 @@ export default {
 					message: `addMeasurement failed - ${error}`
 				});
 			});
+		},
+		addMeasurementEntry(context, { measurementId, date, value }) {
+			return MeasurementHttpService.addMeasurementEntry(measurementId, date, value).then((res) => {
+				return res;
+			}).catch((error) => {
+				Vue.toasted.global.apiError({
+					message: `addMeasurementEntry failed - ${error}`
+				});
+			});
 		}
 	}
 };

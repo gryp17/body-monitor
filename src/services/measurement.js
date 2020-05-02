@@ -13,5 +13,12 @@ export default {
 			name,
 			type
 		});
+	},
+	addMeasurementEntry(measurementId, date, value) {
+		return API.post('/Measurement/addMeasurementEntry', {
+			measurementId,
+			date,
+			value
+		});
 	}
 };

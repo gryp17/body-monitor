@@ -8,6 +8,7 @@ export default (errorCode) => {
 		invalid_login: 'Грешно име или парола',
 		empty_field: 'Празно поле',
 		invalid_int: 'Невалидно число',
+		invalid_number: 'Невалидно число',
 		invalid_date: 'Невалидна дата',
 		invalid_email: 'Невалиден имейл',
 		weak_password: 'Паролата не съдържа поне едно число и буква',
