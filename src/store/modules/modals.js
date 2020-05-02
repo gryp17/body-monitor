@@ -1,11 +1,15 @@
 export default {
 	namespaced: true,
 	state: {
-		measurementsModalOpened: false
+		addMeasurementModalOpened: false,
+		addEntryModalOpened: false
 	},
 	mutations: {
-		setMeasurementsModalOpened(state, opened) {
-			state.measurementsModalOpened = opened;
+		setAddMeasurementModalOpened(state, opened) {
+			state.addMeasurementModalOpened = opened;
+		},
+		setAddEntryModalOpened(state, opened) {
+			state.addEntryModalOpened = opened;
 		}
 	},
 	actions: {
@@ -13,15 +17,29 @@ export default {
 		 * Shows the measurements modal
 		 * @param {Object} context
 		 */
-		showMeasurementsModal(context) {
-			context.commit('setMeasurementsModalOpened', true);
+		showAddMeasurementModal(context) {
+			context.commit('setAddMeasurementModalOpened', true);
 		},
 		/**
 		 * Hides the measurements modal
 		 * @param {Object} context
 		 */
-		hideMeasurementsModal(context) {
-			context.commit('setMeasurementsModalOpened', false);
+		hideAddMeasurementModal(context) {
+			context.commit('setAddMeasurementModalOpened', false);
+		},
+		/**
+		 * Shows the add entry modal
+		 * @param {Object} context
+		 */
+		showAddEntryModal(context) {
+			context.commit('setAddEntryModalOpened', true);
+		},
+		/**
+		 * Hides the add entry modal
+		 * @param {Object} context
+		 */
+		hideAddEntryModal(context) {
+			context.commit('setAddEntryModalOpened', false);
 		}
 	}
 };

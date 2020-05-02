@@ -6,7 +6,8 @@ export default {
 		errors: {
 			login: {},
 			signup: {},
-			addMeasurement: {}
+			addMeasurement: {},
+			addEntry: {}
 		}
 	},
 	mutations: {

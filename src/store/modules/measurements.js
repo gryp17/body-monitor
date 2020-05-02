@@ -42,6 +42,9 @@ export default {
 		},
 		addMeasurement(context, { name, type }) {
 			return MeasurementHttpService.addMeasurement(name, type).then((res) => {
+				if (!res.data.error) {
+					context.dispatch('getMeasurements');
+				}
 				return res;
 			}).catch((error) => {
 				Vue.toasted.global.apiError({

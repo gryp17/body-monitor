@@ -1,10 +1,10 @@
 <template>
-	<div class="measurements-modal">
+	<div class="add-entry-modal">
 
-		<BaseModal :visible="visible" @hidden="hideMeasurementsModal">
+		<BaseModal :visible="visible" @hidden="hideAddEntryModal">
 			<template v-slot:header>
 				<h5 class="modal-title">
-					Добави мерки
+					Добави данни
 				</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -13,22 +13,34 @@
 			<template v-slot:body>
 
 				<div class="form-wrapper">
+
+					<FormDropdown
+						v-model="measurementId"
+						:options="measurementOptions"
+						:error="errors.measurementId"
+						@focus="clearError"
+						name="measurementId"
+					/>
+
+					<FormDatepicker
+						v-model="date"
+						:error="errors.date"
+						@focus="clearError"
+						name="date"
+						floating-label
+						placeholder="Дата"
+					/>
+
 					<FormInput
-						v-model="name"
-						:error="errors.name"
+						v-model="value"
+						:placeholder="valueFieldPlaceholder"
+						:error="errors.value"
 						@focus="clearError"
 						type="text"
-						name="name"
+						name="value"
 						floating-label
-						placeholder="Име (тегло, обиколка...)"
 					/>
-					<FormDropdown
-						v-model="type"
-						:options="unitTypes"
-						:error="errors.type"
-						@focus="clearError"
-						name="type"
-					/>
+
 					<FormButton
 						:disabled="submitting"
 						@click="submit">
@@ -45,7 +57,7 @@
 	import { mapState, mapActions } from 'vuex';
 	import BaseModal from '@/components/modals/BaseModal';
 
-	const formName = 'addMeasurement';
+	const formName = 'addEntry';
 
 	export default {
 		components: {
@@ -53,31 +65,41 @@
 		},
 		data() {
 			return {
-				name: '',
-				type: 0,
+				measurementId: null,
+				date: new Date(),
+				value: '',
 				submitting: false
 			};
 		},
 		computed: {
 			...mapState('modals', {
-				visible: 'measurementsModalOpened'
+				visible: 'addEntryModalOpened'
 			}),
 			...mapState('forms', {
 				errors: (state) => state.errors[formName]
 			}),
 			...mapState('measurements', [
-				'units'
+				'measurements'
 			]),
-			unitTypes() {
-				const types = {
-					0: 'Мерна единица'
-				};
-
-				this.units.forEach((unit) => {
-					types[unit.id] = unit.name;
+			measurementOptions() {
+				const options = {};
+				this.measurements.forEach((measurement) => {
+					options[measurement.id] = measurement.name;
 				});
 
-				return types;
+				return options;
+			},
+			valueFieldPlaceholder() {
+				//TODO: fix this
+				if (!this.measurements || this.measurements.length === 0 || !this.measurementId) {
+					return 'Стойност';
+				}
+
+				const unit = this.measurements.find((measurement) => {
+					return measurement.id === this.measurementId;
+				}).unit_id;
+
+				return `Стойност (${unit})`;
 			}
 		},
 		watch: {
@@ -91,17 +113,15 @@
 		},
 		methods: {
 			...mapActions('modals', [
-				'hideMeasurementsModal'
+				'hideAddEntryModal'
 			]),
 			...mapActions('forms', [
 				'setFormError',
 				'clearFormError',
 				'resetFormErrors'
 			]),
-			...mapActions('measurements', [
-				'addMeasurement'
-			]),
 			submit() {
+				/*
 				if (this.submitting) {
 					return;
 				}
@@ -127,6 +147,7 @@
 
 					this.submitting = false;
 				});
+				*/
 			},
 			/**
 			 * Clears the form error related to this input
@@ -144,14 +165,15 @@
 			 */
 			resetState() {
 				Object.assign(this.$data, this.$options.data.call(this));
+				this.measurementId = this.measurements[0].id;
 			}
 		}
 	};
 </script>
 
 <style lang="scss">
-	.measurements-modal {
-		$max-width: 600px;
+	.add-entry-modal {
+		$max-width: 650px;
 
 		.modal-dialog {
 			max-width: $max-width;
@@ -165,7 +187,7 @@
 		.form-wrapper {
 			display: flex;
 
-			.form-input, .form-dropdown {
+			.form-input, .form-dropdown, .form-datepicker {
 				flex: 1;
 				margin-right: 5px;
 			}
@@ -179,7 +201,7 @@
 			.form-wrapper {
 				flex-direction: column;
 
-				.form-input, .form-dropdown {
+				.form-input, .form-dropdown, .form-datepicker {
 					margin-right: 0px;
 				}
 			}

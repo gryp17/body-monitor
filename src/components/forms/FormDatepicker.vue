@@ -126,10 +126,11 @@
 		margin-bottom: 16px;
 
 		.form-control {
+			height: 45px;
 			padding: 20px 10px;
 			border-radius: 0px;
-			background-color: $gray;
-			border-color: transparent;
+			background-color: $gray-lighter;
+			border-color: $gray;
 			font-size: inherit;
 
 			&.has-error {
@@ -138,7 +139,11 @@
 
 			&:focus {
 				box-shadow: none;
-				border-color: $blue-lighter;
+				border-color: $blue;
+			}
+
+			&[readonly] {
+				background-color: $gray-lighter;
 			}
 		}
 	}

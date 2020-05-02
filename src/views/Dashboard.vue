@@ -9,26 +9,29 @@
 			{{ units }}
 			<hr />
 
-			<FormButton @click="showMeasurementsModal">
+			<FormButton @click="showAddMeasurementModal">
 				Добави мерки
 			</FormButton>
 
-			<FormButton>
+			<FormButton v-show="measurements && measurements.length > 0" @click="showAddEntryModal">
 				Добави данни
 			</FormButton>
 		</template>
 
-		<MeasurementsModal />
+		<AddMeasurementModal />
+		<AddEntryModal />
 	</div>
 </template>
 
 <script>
 	import { mapState, mapActions } from 'vuex';
-	import MeasurementsModal from '@/components/modals/MeasurementsModal';
+	import AddMeasurementModal from '@/components/modals/AddMeasurementModal';
+	import AddEntryModal from '@/components/modals/AddEntryModal';
 
 	export default {
 		components: {
-			MeasurementsModal
+			AddMeasurementModal,
+			AddEntryModal
 		},
 		data() {
 			return {
@@ -51,7 +54,8 @@
 				'getMeasurements'
 			]),
 			...mapActions('modals', [
-				'showMeasurementsModal'
+				'showAddMeasurementModal',
+				'showAddEntryModal'
 			])
 		}
 	};
