@@ -42,7 +42,7 @@ export default {
 		 */
 		login(context, { email, password }) {
 			return UserHttpService.login(email, password).then((res) => {
-				if (res.data && res.data.ID) {
+				if (res.data && res.data.id) {
 					context.commit('setUserSession', res.data);
 				}
 				return res;
@@ -75,6 +75,9 @@ export default {
 		 */
 		signup(context, { email, password, repeatPassword }) {
 			return UserHttpService.signup(email, password, repeatPassword).then((res) => {
+				if (res.data && res.data.user) {
+					context.commit('setUserSession', res.data.user);
+				}
 				return res;
 			}).catch((error) => {
 				Vue.toasted.global.apiError({

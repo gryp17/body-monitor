@@ -31,33 +31,41 @@
 			</template>
 			<template v-slot:content>
 				<div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-					login form
+					<LoginForm />
 				</div>
 				<div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-					signup form
+					<SignupForm />
 				</div>
 			</template>
 		</TabsNav>
-
-		<div class="row no-gutters">
-			<div class="col">
-				1111111
-			</div>
-			<div class="col">
-				222222
-			</div>
-		</div>
-
-		<input type="text" />
 	</div>
 </template>
 
 <script>
 	import TabsNav from '@/components/TabsNav';
+	import LoginForm from '@/components/LoginForm';
+	import SignupForm from '@/components/SignupForm';
 
 	export default {
 		components: {
-			TabsNav
+			TabsNav,
+			LoginForm,
+			SignupForm
 		}
 	};
 </script>
+
+<style lang="scss">
+	.authentication-page {
+		margin: auto;
+		width: 60%;
+
+		.tab-content {
+			padding: 15px 0px;
+		}
+
+		@include media-breakpoint-down(sm) {
+			width: auto;
+		}
+	}
+</style>

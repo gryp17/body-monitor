@@ -141,13 +141,13 @@
 		.form-control {
 			padding: 20px 10px;
 			border-radius: 0px;
-			background-color: $gray;
-			border-color: transparent;
+			background-color: $gray-lighter;
+			border-color: $gray;
 			font-size: inherit;
 
 			&:focus {
 				box-shadow: none;
-				border-color: $blue-lighter;
+				border-color: $blue;
 			}
 
 			&.monospaced {

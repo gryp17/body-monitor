@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from '@/views/Home';
+import Dashboard from '@/views/Dashboard';
 import Authentication from '@/views/Authentication';
 
 import store from '@/store';
@@ -11,16 +11,16 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		name: 'home',
-		component: Home,
+		name: 'dashboard',
+		component: Dashboard,
 		meta: {
 			authRequired: true
 		}
 	},
 	{
-		path: '/home',
-		name: 'explicit-home',
-		component: Home,
+		path: '/dashboard',
+		name: 'explicit-dashboard',
+		component: Dashboard,
 		meta: {
 			authRequired: true
 		}
@@ -32,7 +32,7 @@ const routes = [
 	},
 	{
 		path: '*',
-		component: Home,
+		component: Dashboard,
 		meta: {
 			authRequired: true
 		}

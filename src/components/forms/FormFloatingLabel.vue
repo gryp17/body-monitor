@@ -21,7 +21,7 @@
 		left: 5px;
 		padding: 0px 5px;
 		background-color: $white;
-		border: solid 1px $blue-lighter;
+		border: solid 1px $blue;
 		font-size: 10px;
 		opacity: 0;
 		z-index: 6;

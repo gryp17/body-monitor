@@ -1,6 +1,6 @@
 <template>
 	<button
-		:class="['form-button', {outline, transparent}, className]"
+		:class="['form-button', {outline}, className]"
 		:type="type"
 		v-on="{
 			...$listeners
@@ -21,10 +21,6 @@
 			outline: {
 				type: Boolean,
 				default: false
-			},
-			transparent: {
-				type: Boolean,
-				default: false
 			}
 		}
 	};
@@ -34,43 +30,32 @@
 	.form-button {
 		padding: 6px 20px;
 		border: solid 1px transparent;
-		background-color: $red;
+		background-color: $blue;
 		color: $white;
 		transition: all 0.4s ease-in-out;
 		font-size: 16px;
 
 		&:hover, &:active, &:focus, &.active {
-			background-color: darken($red, 15%);
+			background-color: darken($blue, 15%);
 		}
 
 		&:disabled {
-			background-color: lighten($red, 15%);
+			background-color: lighten($blue, 15%);
 			cursor: not-allowed;
 
 			&:hover {
-				background-color: lighten($red, 15%);
+				background-color: lighten($blue, 15%);
 			}
 		}
 
 		&.outline {
 			background-color: $white;
-			color: $red;
-			border: solid 1px $red;
-
-			&:hover, &:active, &:focus, &.active {
-				background-color: $red;
-				color: $white;
-			}
-		}
-
-		&.transparent {
-			padding: 0px 10px;
-			background-color: transparent;
 			color: $blue;
+			border: solid 1px $blue;
 
 			&:hover, &:active, &:focus, &.active {
-				background-color: transparent;
-				color: $red;
+				background-color: $blue;
+				color: $white;
 			}
 		}
 

@@ -101,7 +101,7 @@
 			box-shadow: 0px 0px 11px 3px $gray-darker;
 
 			header {
-				padding: 10px;
+				padding: 20px;
 				text-align: center;
 				font-size: 30px;
 			}

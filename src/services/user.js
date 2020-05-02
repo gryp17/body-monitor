@@ -39,113 +39,11 @@ export default {
 	 * @param {String} captcha
 	 * @returns {Promise}
 	 */
-	signup(username, email, password, repeatPassword, birthday, gender, captcha) {
+	signup(email, password, repeatPassword) {
 		return API.post('/User/signup', {
-			username,
 			email,
 			password,
-			repeat_password: repeatPassword,
-			birthday,
-			gender,
-			captcha
-		});
-	},
-	/**
-	 * Sends a password reset request for the specified email
-	 * @param {String} email
-	 * @returns {Promise}
-	 */
-	sendPasswordResetRequest(email) {
-		return API.post('/PasswordReset/sendPasswordResetRequest', {
-			email
-		});
-	},
-	/**
-	 * Checks if the userId/hash combination is valid (not expired)
-	 * @param {Number} userId
-	 * @param {String} hash
-	 * @returns {Promise}
-	 */
-	checkPasswordResetHash(userId, hash) {
-		return API.post('/PasswordReset/checkPasswordResetHash', {
-			user_id: userId,
-			hash
-		});
-	},
-	/**
-	 * Updates the user password
-	 * @param {Number} userId
-	 * @param {String} hash
-	 * @param {String} password
-	 * @param {String} repeatPassword
-	 * @returns {Promise}
-	 */
-	updatePassword(userId, hash, password, repeatPassword) {
-		return API.post('/User/updatePassword', {
-			user_id: userId,
-			hash,
-			password,
-			repeat_password: repeatPassword
-		});
-	},
-	/**
-	 * Activates the user account
-	 * @param {Number} userId
-	 * @param {String} hash
-	 * @returns {Promise}
-	 */
-	activateUser(userId, hash) {
-		return API.post('/UserActivation/activateUser', {
-			user_id: userId,
-			hash
-		});
-	},
-	/**
-	 * Sends an user activation email
-	 * @param {String} email
-	 * @returns {Promise}
-	 */
-	resendActivation(email) {
-		return API.post('/User/resendUserActivation', {
-			email
-		});
-	},
-	/**
-	 * Returns the user data for the specified id
-	 * @param {Number} userId
-	 * @returns {Promise}
-	 */
-	getUser(userId) {
-		return API.get(`/User/getUser?id=${userId}`);
-	},
-	/**
-	 * Updates the user data
-	 * @param {Object} formData
-	 * @returns {Promise}
-	 */
-	updateUser(formData) {
-		return API.post('/User/updateUser', formData);
-	},
-	/**
-	 * Fetches users that match the passed keyword
-	 * @param {String} keyword
-	 * @param {Number} limit
-	 * @param {Number} offset
-	 * @returns {Promise}
-	 */
-	search(keyword, limit, offset) {
-		return API.get(`/User/search?keyword=${keyword}&limit=${limit}&offset=${offset}`);
-	},
-	/**
-	 * Submits an user report
-	 * @param {Number} userId
-	 * @param {String} report
-	 * @returns {Promise}
-	 */
-	reportUser(userId, report) {
-		return API.post('/UserReport/reportUser', {
-			user_id: userId,
-			report
+			repeatPassword
 		});
 	}
 };

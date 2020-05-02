@@ -1,5 +1,5 @@
 <template>
-	<div class="home-page">
+	<div class="dashboard-page">
 		<LoadingIndicator v-if="loading" />
 		<template v-else>
 			content
