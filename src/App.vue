@@ -11,7 +11,7 @@
 
 <script>
 	import Vue from 'vue';
-	import { mapState, mapActions } from 'vuex';
+	import { mapActions } from 'vuex';
 
 	import errorsMap from '@/filters/errorsMap';
 	import FormButton from '@/components/forms/FormButton';
@@ -33,13 +33,11 @@
 				appIsReady: false
 			};
 		},
-		computed: {
-			...mapState('auth', [
-				'userSession'
-			])
-		},
 		created() {
-			this.getUserSession().then(() => {
+			Promise.all([
+				this.getUserSession(),
+				this.getUnits()
+			]).then(() => {
 				this.appIsReady = true;
 			}).catch(() => {
 				this.$toasted.global.apiError({
@@ -50,6 +48,9 @@
 		methods: {
 			...mapActions('auth', [
 				'getUserSession'
+			]),
+			...mapActions('measurements', [
+				'getUnits'
 			])
 		}
 	};

@@ -3,12 +3,16 @@
 		<LoadingIndicator v-if="loading" />
 		<template v-else>
 			content
+
+			{{ units }}
+			<hr />
+			{{ measurements }}
 		</template>
 	</div>
 </template>
 
 <script>
-	//import { mapState, mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex';
 
 
 	export default {
@@ -17,10 +21,21 @@
 				loading: true
 			};
 		},
+		computed: {
+			...mapState('measurements', [
+				'units',
+				'measurements'
+			])
+		},
 		created() {
-			setTimeout(() => {
+			this.getMeasurements().then(() => {
 				this.loading = false;
-			}, 3000);
+			});
+		},
+		methods: {
+			...mapActions('measurements', [
+				'getMeasurements'
+			])
 		}
 	};
 </script>
