@@ -20,5 +20,8 @@ export default {
 			date,
 			value
 		});
+	},
+	getMeasurementEntries() {
+		return API.get('/Measurement/getMeasurementEntries');
 	}
 };

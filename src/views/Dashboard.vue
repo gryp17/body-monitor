@@ -6,7 +6,7 @@
 				Няма добавени мерки.
 			</div>
 
-			{{ units }}
+			{{ entries }}
 			<hr />
 
 			<FormButton @click="showAddMeasurementModal">
@@ -41,17 +41,22 @@
 		computed: {
 			...mapState('measurements', [
 				'units',
-				'measurements'
+				'measurements',
+				'entries'
 			])
 		},
 		created() {
-			this.getMeasurements().then(() => {
+			Promise.all([
+				this.getMeasurements(),
+				this.getMeasurementEntries()
+			]).then(() => {
 				this.loading = false;
 			});
 		},
 		methods: {
 			...mapActions('measurements', [
-				'getMeasurements'
+				'getMeasurements',
+				'getMeasurementEntries'
 			]),
 			...mapActions('modals', [
 				'showAddMeasurementModal',

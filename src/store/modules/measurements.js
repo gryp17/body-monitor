@@ -5,7 +5,8 @@ export default {
 	namespaced: true,
 	state: {
 		units: [],
-		measurements: []
+		measurements: [],
+		entries: []
 	},
 	getters: {
 		measurementsMap(state) {
@@ -33,6 +34,9 @@ export default {
 		},
 		setMeasurements(state, measurements) {
 			state.measurements = measurements;
+		},
+		setEntries(state, entries) {
+			state.entries = entries;
 		}
 	},
 	actions: {
@@ -74,10 +78,25 @@ export default {
 		},
 		addMeasurementEntry(context, { measurementId, date, value }) {
 			return MeasurementHttpService.addMeasurementEntry(measurementId, date, value).then((res) => {
+				if (!res.data.error) {
+					context.dispatch('getMeasurementEntries');
+				}
 				return res;
 			}).catch((error) => {
 				Vue.toasted.global.apiError({
 					message: `addMeasurementEntry failed - ${error}`
+				});
+			});
+		},
+		getMeasurementEntries(context) {
+			return MeasurementHttpService.getMeasurementEntries().then((res) => {
+				if (res.data && res.data) {
+					context.commit('setEntries', res.data);
+				}
+				return res;
+			}).catch((error) => {
+				Vue.toasted.global.apiError({
+					message: `getMeasurementEntries failed - ${error}`
 				});
 			});
 		}
