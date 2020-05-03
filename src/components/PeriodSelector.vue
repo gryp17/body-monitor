@@ -5,6 +5,7 @@
 				v-for="(label, period) in periods"
 				:key="period"
 				:class="['btn btn-secondary', {active: period === value}]"
+				@click="onSelect(period)"
 			>
 				<input type="radio" name="period-option" :checked="period === value">
 				{{ label }}
@@ -21,9 +22,8 @@
 		data() {
 			return {
 				periods: {
-					year: 'Година',
-					month: 'Месец',
-					week: '7 дни'
+					months: 'Месеци',
+					days: 'Дни'
 				}
 			};
 		},

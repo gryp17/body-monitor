@@ -7,13 +7,13 @@
 
 		<PeriodSelector v-model="selectedPeriod" />
 
-		<button @click="prevPage">
+		<FormButton :disabled="totalPages === 0 || page === totalPages" @click="prevPage">
 			Prev page
-		</button>
+		</FormButton>
 
-		<button @click="nextPage">
+		<FormButton :disabled="totalPages === 0 || page === 1" @click="nextPage">
 			Next page
-		</button>
+		</FormButton>
 
 		<LineChart :chart-data="chartData" :options="options" />
 	</div>
@@ -21,7 +21,6 @@
 
 <script>
 	import { mapState, mapGetters } from 'vuex';
-	import moment from 'moment';
 	import LineChart from '@/components/LineChart';
 	import PeriodSelector from '@/components/PeriodSelector';
 
@@ -33,10 +32,8 @@
 		data() {
 			return {
 				measurementId: null,
-				selectedPeriod: 'week',
-				minDate: moment(),
-				maxDate: moment(),
-				page: 0,
+				selectedPeriod: 'days',
+				page: 1,
 				options: {
 					maintainAspectRatio: false,
 					spanGaps: false,
@@ -47,6 +44,15 @@
 					}
 				}
 			};
+		},
+		watch: {
+			measurementId() {
+				this.selectedPeriod = 'days';
+				this.goToPage(1);
+			},
+			selectedPeriod() {
+				this.goToPage(1);
+			}
 		},
 		computed: {
 			...mapState('measurements', [
@@ -76,11 +82,28 @@
 				}
 				return this.measurementsMap[this.measurementId].unit;
 			},
-			chartData() {
+			perPage() {
+				return this.selectedPeriod === 'days' ? 7 : 12;
+			},
+			selectedMeasurementData() {
 				if (!this.measurementId) {
-					return {};
+					return [];
 				}
 
+				const filtered = this.entries.filter((entry) => {
+					return entry.measurement_id === parseInt(this.measurementId);
+				});
+
+				if (this.selectedPeriod === 'months') {
+					return this.groupByMonth(filtered);
+				}
+
+				return filtered;
+			},
+			totalPages() {
+				return Math.ceil(this.selectedMeasurementData.length / this.perPage);
+			},
+			chartData() {
 				const chartData = {
 					labels: [],
 					datasets: [{
@@ -95,19 +118,20 @@
 				const labels = [];
 				const data = [];
 
-				console.log(this.minDate.toDate());
-				console.log(this.maxDate.toDate());
+				const filteredData = this.selectedMeasurementData;
 
-				this.entries.forEach((entry) => {
-					if (entry.measurement_id === parseInt(this.measurementId)) {
-						const date = this.$options.filters.date(entry.date, 'YYYY-MM-DD');
+				//TODO: this shit gets bugged on the second or third page!!!
 
-						if (moment(entry.date).isBetween(this.minDate, this.maxDate, 'day', '(]')) {
-							labels.push(date);
-							data.push(entry.value);
-						}
-					}
-				});
+				filteredData
+					.reverse()
+					.slice((this.page - 1) * this.perPage, this.page * this.perPage)
+					.reverse()
+					.forEach((entry) => {
+						const format = this.selectedPeriod === 'days' ? 'YYYY-MM-DD' : 'MMMM - YYYY';
+						const date = this.$options.filters.date(entry.date, format);
+						labels.push(date);
+						data.push(entry.value);
+					});
 
 				chartData.labels = labels;
 				chartData.datasets[0].data = data;
@@ -118,27 +142,27 @@
 		},
 		created() {
 			this.measurementId = this.measurements[0].id;
-			this.goToPage(0);
+			this.goToPage(1);
 		},
 		methods: {
+			groupByMonth(entries) {
+				const grouped = {};
+
+				entries.forEach((entry) => {
+					const date = this.$options.filters.date(entry.date, 'YYYY-MM');
+					grouped[date] = entry;
+				});
+
+				return Object.values(grouped);
+			},
 			prevPage() {
 				this.goToPage(this.page + 1);
 			},
 			nextPage() {
-				if (this.page !== 0) {
-					this.goToPage(this.page - 1);
-				}
+				this.goToPage(this.page - 1);
 			},
 			goToPage(page) {
-				console.log('PAGE --- ', page);
 				this.page = page;
-
-				//TODO: this needs to paginate by entries and not by dates because there could be a lot of empty dates
-
-				if (this.selectedPeriod === 'week') {
-					this.maxDate = moment().subtract(this.page * 7, 'days');
-					this.minDate = this.maxDate.clone().subtract(7, 'days');
-				}
 			}
 		}
 	};
