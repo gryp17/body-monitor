@@ -5,21 +5,26 @@
 			:options="measurementOptions"
 		/>
 
+		<PeriodSelector v-model="selectedPeriod" />
+
 		<LineChart :chart-data="chartData" :options="options" />
 	</div>
 </template>
 
 <script>
-	import LineChart from '@/components/LineChart';
 	import { mapState, mapGetters } from 'vuex';
+	import LineChart from '@/components/LineChart';
+	import PeriodSelector from '@/components/PeriodSelector';
 
 	export default {
 		components: {
-			LineChart
+			LineChart,
+			PeriodSelector
 		},
 		data() {
 			return {
 				measurementId: null,
+				selectedPeriod: 'week',
 				options: {
 					maintainAspectRatio: false,
 					spanGaps: false,
@@ -77,6 +82,8 @@
 
 				const labels = [];
 				const data = [];
+
+				//TODO: filter the entries by the selectedPeriod as well
 
 				this.entries.forEach((entry) => {
 					if (entry.measurement_id === parseInt(this.measurementId)) {
