@@ -6,7 +6,8 @@
 				Няма добавени мерки.
 			</div>
 
-			{{ entries }}
+			<DashboardChart />
+
 			<hr />
 
 			<FormButton @click="showAddMeasurementModal">
@@ -27,11 +28,13 @@
 	import { mapState, mapActions } from 'vuex';
 	import AddMeasurementModal from '@/components/modals/AddMeasurementModal';
 	import AddEntryModal from '@/components/modals/AddEntryModal';
+	import DashboardChart from '@/components/DashboardChart';
 
 	export default {
 		components: {
 			AddMeasurementModal,
-			AddEntryModal
+			AddEntryModal,
+			DashboardChart
 		},
 		data() {
 			return {
