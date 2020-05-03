@@ -54,7 +54,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import BaseModal from '@/components/modals/BaseModal';
 
 	const formName = 'addEntry';
@@ -81,6 +81,9 @@
 			...mapState('measurements', [
 				'measurements'
 			]),
+			...mapGetters('measurements', [
+				'measurementsMap'
+			]),
 			measurementOptions() {
 				const options = {};
 				this.measurements.forEach((measurement) => {
@@ -90,14 +93,11 @@
 				return options;
 			},
 			valueFieldPlaceholder() {
-				//TODO: fix this
 				if (!this.measurements || this.measurements.length === 0 || !this.measurementId) {
 					return 'Стойност';
 				}
 
-				const unit = this.measurements.find((measurement) => {
-					return measurement.id === this.measurementId;
-				}).unit_id;
+				const unit = this.measurementsMap[this.measurementId].unit;
 
 				return `Стойност (${unit})`;
 			}

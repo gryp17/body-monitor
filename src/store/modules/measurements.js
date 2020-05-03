@@ -7,6 +7,26 @@ export default {
 		units: [],
 		measurements: []
 	},
+	getters: {
+		measurementsMap(state) {
+			const map = {};
+
+			state.measurements.forEach((measurement) => {
+				map[measurement.id] = measurement;
+			});
+
+			return map;
+		},
+		unitsMap(state) {
+			const map = {};
+
+			state.units.forEach((unit) => {
+				map[unit.id] = unit.name;
+			});
+
+			return map;
+		}
+	},
 	mutations: {
 		setUnits(state, units) {
 			state.units = units;

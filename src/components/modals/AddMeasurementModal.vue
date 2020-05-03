@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import BaseModal from '@/components/modals/BaseModal';
 
 	const formName = 'addMeasurement';
@@ -65,17 +65,14 @@
 			...mapState('forms', {
 				errors: (state) => state.errors[formName]
 			}),
-			...mapState('measurements', [
-				'units'
+			...mapGetters('measurements', [
+				'unitsMap'
 			]),
 			unitTypes() {
 				const types = {
-					0: 'Мерна единица'
+					0: 'Мерна единица',
+					...this.unitsMap
 				};
-
-				this.units.forEach((unit) => {
-					types[unit.id] = unit.name;
-				});
 
 				return types;
 			}
