@@ -41,6 +41,13 @@
 						line: {
 							tension: 0.000001
 						}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true
+							}
+						}]
 					}
 				}
 			};
@@ -118,9 +125,7 @@
 				const labels = [];
 				const data = [];
 
-				const filteredData = this.selectedMeasurementData;
-
-				//TODO: this shit gets bugged on the second or third page!!!
+				const filteredData = [...this.selectedMeasurementData];
 
 				filteredData
 					.reverse()
