@@ -7,12 +7,21 @@
 
 		<PeriodSelector v-model="selectedPeriod" />
 
+		<button @click="prevPage">
+			Prev page
+		</button>
+
+		<button @click="nextPage">
+			Next page
+		</button>
+
 		<LineChart :chart-data="chartData" :options="options" />
 	</div>
 </template>
 
 <script>
 	import { mapState, mapGetters } from 'vuex';
+	import moment from 'moment';
 	import LineChart from '@/components/LineChart';
 	import PeriodSelector from '@/components/PeriodSelector';
 
@@ -25,6 +34,9 @@
 			return {
 				measurementId: null,
 				selectedPeriod: 'week',
+				minDate: moment(),
+				maxDate: moment(),
+				page: 0,
 				options: {
 					maintainAspectRatio: false,
 					spanGaps: false,
@@ -83,13 +95,17 @@
 				const labels = [];
 				const data = [];
 
-				//TODO: filter the entries by the selectedPeriod as well
+				console.log(this.minDate.toDate());
+				console.log(this.maxDate.toDate());
 
 				this.entries.forEach((entry) => {
 					if (entry.measurement_id === parseInt(this.measurementId)) {
 						const date = this.$options.filters.date(entry.date, 'YYYY-MM-DD');
-						labels.push(date);
-						data.push(entry.value);
+
+						if (moment(entry.date).isBetween(this.minDate, this.maxDate, 'day', '(]')) {
+							labels.push(date);
+							data.push(entry.value);
+						}
 					}
 				});
 
@@ -102,6 +118,28 @@
 		},
 		created() {
 			this.measurementId = this.measurements[0].id;
+			this.goToPage(0);
+		},
+		methods: {
+			prevPage() {
+				this.goToPage(this.page + 1);
+			},
+			nextPage() {
+				if (this.page !== 0) {
+					this.goToPage(this.page - 1);
+				}
+			},
+			goToPage(page) {
+				console.log('PAGE --- ', page);
+				this.page = page;
+
+				//TODO: this needs to paginate by entries and not by dates because there could be a lot of empty dates
+
+				if (this.selectedPeriod === 'week') {
+					this.maxDate = moment().subtract(this.page * 7, 'days');
+					this.minDate = this.maxDate.clone().subtract(7, 'days');
+				}
+			}
 		}
 	};
 </script>
