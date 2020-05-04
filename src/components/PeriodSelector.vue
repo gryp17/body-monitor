@@ -22,8 +22,9 @@
 		data() {
 			return {
 				periods: {
-					months: 'Месеци',
-					days: 'Дни'
+					year: 'Година',
+					month: 'Месец',
+					week: 'Седмица'
 				}
 			};
 		},

@@ -1,25 +1,13 @@
 <template>
 	<div class="dashboard-chart">
-		<FormDropdown
-			v-model="measurementId"
-			:options="measurementOptions"
-		/>
-
 		<PeriodSelector v-model="selectedPeriod" />
 
-		<FormButton :disabled="totalPages === 0 || page === totalPages" @click="prevPage">
-			Prev page
-		</FormButton>
-
-		<FormButton :disabled="totalPages === 0 || page === 1" @click="nextPage">
-			Next page
-		</FormButton>
-
-		<LineChart :chart-data="chartData" :options="options" />
+		<LineChart :chart-data="chartData" :options="chartOptions" />
 	</div>
 </template>
 
 <script>
+	import Vue from 'vue';
 	import { mapState, mapGetters } from 'vuex';
 	import LineChart from '@/components/LineChart';
 	import PeriodSelector from '@/components/PeriodSelector';
@@ -31,10 +19,32 @@
 		},
 		data() {
 			return {
-				measurementId: null,
-				selectedPeriod: 'days',
-				page: 1,
-				options: {
+				selectedPeriod: 'week'
+			};
+		},
+		computed: {
+			...mapState('measurements', [
+				'measurements',
+				'entries'
+			]),
+			...mapGetters('measurements', [
+				'measurementsMap'
+			]),
+			groupedMeasurementData() {
+				const measurements = {};
+
+				this.entries.forEach((entry) => {
+					if (!measurements[entry.measurement_id]) {
+						measurements[entry.measurement_id] = [];
+					}
+
+					measurements[entry.measurement_id].push(entry);
+				});
+
+				return measurements;
+			},
+			chartOptions() {
+				return {
 					maintainAspectRatio: false,
 					spanGaps: false,
 					elements: {
@@ -47,109 +57,91 @@
 							ticks: {
 								beginAtZero: true
 							}
+						}],
+						xAxes: [{
+							type: 'time',
+							//TODO: test this
+							distribution: 'series', //linear, series?
+							ticks: {
+								source: 'data',
+								//THIS WORKS
+								callback(label, index, labels) {
+									//TODO: use the 'MMMM' format only when grouping by months
+									//return Vue.options.filters.date(label, 'MMMM');
+									return Vue.options.filters.date(label, 'YYYY-MM-DD');
+								}
+							},
+							time: {
+								displayFormats: {
+									//day: 'MMMM'
+									day: 'YYYY/MM/DD',
+									month: 'MMMM',
+									quarter: 'YYYY/MM/DD',
+									year: 'YYYY/MM/DD'
+								},
+								tooltipFormat: 'YYYY/MM/DD'
+							}
 						}]
 					}
-				}
-			};
-		},
-		watch: {
-			measurementId() {
-				this.selectedPeriod = 'days';
-				this.goToPage(1);
-			},
-			selectedPeriod() {
-				this.goToPage(1);
-			}
-		},
-		computed: {
-			...mapState('measurements', [
-				'measurements',
-				'entries'
-			]),
-			...mapGetters('measurements', [
-				'measurementsMap'
-			]),
-			measurementOptions() {
-				const options = {};
-				this.measurements.forEach((measurement) => {
-					options[measurement.id] = measurement.name;
-				});
-
-				return options;
-			},
-			measurementName() {
-				if (!this.measurementsMap[this.measurementId]) {
-					return;
-				}
-				return this.measurementsMap[this.measurementId].name;
-			},
-			measurementUnit() {
-				if (!this.measurementsMap[this.measurementId]) {
-					return;
-				}
-				return this.measurementsMap[this.measurementId].unit;
-			},
-			perPage() {
-				return this.selectedPeriod === 'days' ? 7 : 12;
-			},
-			selectedMeasurementData() {
-				if (!this.measurementId) {
-					return [];
-				}
-
-				const filtered = this.entries.filter((entry) => {
-					return entry.measurement_id === parseInt(this.measurementId);
-				});
-
-				if (this.selectedPeriod === 'months') {
-					return this.groupByMonth(filtered);
-				}
-
-				return filtered;
-			},
-			totalPages() {
-				return Math.ceil(this.selectedMeasurementData.length / this.perPage);
+				};
 			},
 			chartData() {
 				const chartData = {
-					labels: [],
-					datasets: [{
-						label: 'Dataset label',
-						backgroundColor: 'rgb(255, 99, 132)',
-						borderColor: 'rgb(255, 99, 132)',
-						data: [],
-						fill: false
-					}]
+					datasets: []
 				};
 
-				const labels = [];
-				const data = [];
+				Object.keys(this.groupedMeasurementData).forEach((measurementId, index) => {
+					const entries = this.groupedMeasurementData[measurementId];
+					const color = this.measurementColor(index);
 
-				const filteredData = [...this.selectedMeasurementData];
+					const dataSet = {
+						label: `${this.measurementName(measurementId)} (${this.measurementUnit(measurementId)})`,
+						backgroundColor: color,
+						borderColor: color,
+						fill: false,
+						data: entries.map((entry) => {
+							return {
+								x: this.$options.filters.date(entry.date, 'YYYY-MM-DD'),
+								y: entry.value
+							};
+						})
+					};
 
-				filteredData
-					.reverse()
-					.slice((this.page - 1) * this.perPage, this.page * this.perPage)
-					.reverse()
-					.forEach((entry) => {
-						const format = this.selectedPeriod === 'days' ? 'YYYY-MM-DD' : 'MMMM - YYYY';
-						const date = this.$options.filters.date(entry.date, format);
-						labels.push(date);
-						data.push(entry.value);
-					});
-
-				chartData.labels = labels;
-				chartData.datasets[0].data = data;
-				chartData.datasets[0].label = `${this.measurementName} (${this.measurementUnit})`;
+					chartData.datasets.push(dataSet);
+				});
 
 				return chartData;
 			}
 		},
-		created() {
-			this.measurementId = this.measurements[0].id;
-			this.goToPage(1);
-		},
 		methods: {
+			measurementName(id) {
+				if (!this.measurementsMap[id]) {
+					return;
+				}
+				return this.measurementsMap[id].name;
+			},
+			measurementUnit(id) {
+				if (!this.measurementsMap[id]) {
+					return;
+				}
+				return this.measurementsMap[id].unit;
+			},
+			measurementColor(index) {
+				const colors = [
+					'#e53935',
+					'#1E88E5',
+					'#43A047',
+					'#8E24AA',
+					'#00ACC1',
+					'#FFA726',
+					'#F06292',
+					'#00897B',
+					'#CDDC39',
+					'#BA68C8'
+				];
+
+				return colors[index % colors.length];
+			},
 			groupByMonth(entries) {
 				const grouped = {};
 
@@ -159,15 +151,6 @@
 				});
 
 				return Object.values(grouped);
-			},
-			prevPage() {
-				this.goToPage(this.page + 1);
-			},
-			nextPage() {
-				this.goToPage(this.page - 1);
-			},
-			goToPage(page) {
-				this.page = page;
 			}
 		}
 	};
