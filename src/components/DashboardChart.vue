@@ -50,6 +50,13 @@
 					measurements[entry.measurement_id].push(entry);
 				});
 
+				//group the entries by month
+				if (this.selectedPeriod === 'year') {
+					Object.keys(measurements).forEach((measurementId) => {
+						measurements[measurementId] = this.groupByMonth(measurements[measurementId]);
+					});
+				}
+
 				return measurements;
 			},
 			chartOptions() {
@@ -77,7 +84,10 @@
 							time: {
 								displayFormats: {
 									day: 'YYYY-MM-DD',
-									month: 'MMMM'
+									week: 'YYYY-MM-DD',
+									month: 'YYYY-MM-DD',
+									quarter: 'YYYY-MM-DD',
+									year: 'YYYY-MM-DD'
 								},
 								tooltipFormat: 'YYYY-MM-DD'
 							}
@@ -130,7 +140,7 @@
 				const formats = {
 					week: 'D MMMM (dd)',
 					month: 'D MMMM',
-					year: 'MMMM'
+					year: 'MMMM (YYYY)'
 				};
 
 				return Vue.options.filters.date(label, formats[this.selectedPeriod]);
@@ -156,7 +166,12 @@
 
 				entries.forEach((entry) => {
 					const date = this.$options.filters.date(entry.date, 'YYYY-MM');
-					grouped[date] = entry;
+
+					grouped[date] = {
+						...entry,
+						//change the day to the last day of the month in order not to confuse chartjs when grouping by month
+						date: moment(entry.date).endOf('month').format('YYYY-MM-DD')
+					};
 				});
 
 				return Object.values(grouped);
