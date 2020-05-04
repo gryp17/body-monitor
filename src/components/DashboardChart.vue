@@ -8,6 +8,7 @@
 
 <script>
 	import Vue from 'vue';
+	import moment from 'moment';
 	import { mapState, mapGetters } from 'vuex';
 	import LineChart from '@/components/LineChart';
 	import PeriodSelector from '@/components/PeriodSelector';
@@ -30,12 +31,20 @@
 			...mapGetters('measurements', [
 				'measurementsMap'
 			]),
+			minDate() {
+				const currentDate = moment();
+				return currentDate.subtract(1, this.selectedPeriod);
+			},
 			groupedMeasurementData() {
 				const measurements = {};
 
 				this.entries.forEach((entry) => {
 					if (!measurements[entry.measurement_id]) {
 						measurements[entry.measurement_id] = [];
+					}
+
+					if (moment(entry.date).isBefore(this.minDate)) {
+						return;
 					}
 
 					measurements[entry.measurement_id].push(entry);
@@ -60,11 +69,9 @@
 						}],
 						xAxes: [{
 							type: 'time',
-							//TODO: test this
 							distribution: 'series', //linear, series?
 							ticks: {
 								source: 'data',
-								//THIS WORKS
 								callback(label, index, labels) {
 									//TODO: use the 'MMMM' format only when grouping by months
 									//return Vue.options.filters.date(label, 'MMMM');
@@ -73,13 +80,10 @@
 							},
 							time: {
 								displayFormats: {
-									//day: 'MMMM'
-									day: 'YYYY/MM/DD',
-									month: 'MMMM',
-									quarter: 'YYYY/MM/DD',
-									year: 'YYYY/MM/DD'
+									day: 'YYYY-MM-DD',
+									month: 'MMMM'
 								},
-								tooltipFormat: 'YYYY/MM/DD'
+								tooltipFormat: 'YYYY-MM-DD'
 							}
 						}]
 					}
