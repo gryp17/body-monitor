@@ -72,11 +72,7 @@
 							distribution: 'series', //linear, series?
 							ticks: {
 								source: 'data',
-								callback(label, index, labels) {
-									//TODO: use the 'MMMM' format only when grouping by months
-									//return Vue.options.filters.date(label, 'MMMM');
-									return Vue.options.filters.date(label, 'YYYY-MM-DD');
-								}
+								callback: this.mapLabels
 							},
 							time: {
 								displayFormats: {
@@ -129,6 +125,15 @@
 					return;
 				}
 				return this.measurementsMap[id].unit;
+			},
+			mapLabels(label, index, labels) {
+				const formats = {
+					week: 'D MMMM (dd)',
+					month: 'D MMMM',
+					year: 'MMMM'
+				};
+
+				return Vue.options.filters.date(label, formats[this.selectedPeriod]);
 			},
 			measurementColor(index) {
 				const colors = [
