@@ -40,7 +40,7 @@
 						<DashboardChart />
 					</div>
 					<div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
-						table goes here
+						<DashboardTable />
 					</div>
 				</template>
 			</TabsNav>
@@ -67,13 +67,15 @@
 	import AddEntryModal from '@/components/modals/AddEntryModal';
 	import TabsNav from '@/components/TabsNav';
 	import DashboardChart from '@/components/DashboardChart';
+	import DashboardTable from '@/components/DashboardTable';
 
 	export default {
 		components: {
 			AddMeasurementModal,
 			AddEntryModal,
 			TabsNav,
-			DashboardChart
+			DashboardChart,
+			DashboardTable
 		},
 		data() {
 			return {

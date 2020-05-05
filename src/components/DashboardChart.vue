@@ -29,34 +29,25 @@
 				'entries'
 			]),
 			...mapGetters('measurements', [
-				'measurementsMap'
+				'measurementsMap',
+				'groupedEntries'
 			]),
 			minDate() {
 				const currentDate = moment();
 				return currentDate.subtract(1, this.selectedPeriod);
 			},
 			groupedMeasurementData() {
-				const measurements = {};
+				const measurements = { ...this.groupedEntries };
 
-				this.entries.forEach((entry) => {
-					if (!measurements[entry.measurement_id]) {
-						measurements[entry.measurement_id] = [];
-					}
-
+				Object.keys(measurements).forEach((measurementId) => {
 					//filter the entries by the min date
-					if (moment(entry.date).isBefore(this.minDate)) {
-						return;
-					}
-
-					measurements[entry.measurement_id].push(entry);
-				});
-
-				//group the entries by month
-				if (this.selectedPeriod === 'year') {
-					Object.keys(measurements).forEach((measurementId) => {
-						measurements[measurementId] = this.groupByMonth(measurements[measurementId]);
+					const entries = measurements[measurementId].filter((entry) => {
+						return moment(entry.date).isAfter(this.minDate); //isBefore
 					});
-				}
+
+					//group the entries by month if necessary
+					measurements[measurementId] = this.selectedPeriod === 'year' ? this.groupByMonth(entries) : entries;
+				});
 
 				return measurements;
 			},

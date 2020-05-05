@@ -9,6 +9,18 @@ export default {
 		entries: []
 	},
 	getters: {
+		groupedEntries(state) {
+			const measurements = {};
+
+			state.entries.forEach((entry) => {
+				if (!measurements[entry.measurement_id]) {
+					measurements[entry.measurement_id] = [];
+				}
+				measurements[entry.measurement_id].push(entry);
+			});
+
+			return measurements;
+		},
 		measurementsMap(state) {
 			const map = {};
 
