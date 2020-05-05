@@ -43,6 +43,7 @@
 						measurements[entry.measurement_id] = [];
 					}
 
+					//filter the entries by the min date
 					if (moment(entry.date).isBefore(this.minDate)) {
 						return;
 					}
@@ -108,6 +109,9 @@
 						label: `${this.measurementName(measurementId)} (${this.measurementUnit(measurementId)})`,
 						backgroundColor: color,
 						borderColor: color,
+						pointBackgroundColor: color,
+						pointBorderWidth: 5,
+						pointHoverBorderWidth: 5,
 						fill: false,
 						data: entries.map((entry) => {
 							return {
@@ -136,15 +140,6 @@
 				}
 				return this.measurementsMap[id].unit;
 			},
-			mapLabels(label, index, labels) {
-				const formats = {
-					week: 'D MMMM (dd)',
-					month: 'D MMMM',
-					year: 'MMMM (YYYY)'
-				};
-
-				return Vue.options.filters.date(label, formats[this.selectedPeriod]);
-			},
 			measurementColor(index) {
 				const colors = [
 					'#e53935',
@@ -161,6 +156,20 @@
 
 				return colors[index % colors.length];
 			},
+			mapLabels(label, index, labels) {
+				const formats = {
+					week: 'D MMMM (dd)',
+					month: 'D MMMM',
+					year: 'MMMM (YYYY)'
+				};
+
+				return Vue.options.filters.date(label, formats[this.selectedPeriod]);
+			},
+			/**
+			 * Groups/filters the entries by year-month taking the latest entry for each month
+			 * @param {Array} entries
+			 * @returns {Array}
+			 */
 			groupByMonth(entries) {
 				const grouped = {};
 
