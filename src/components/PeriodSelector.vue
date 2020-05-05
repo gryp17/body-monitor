@@ -39,13 +39,19 @@
 <style lang="scss">
 	.period-selector {
 		margin: auto;
+		margin-bottom: 40px;
 		width: 60%;
 
 		.btn-group {
 			display: flex;
 
 			.btn {
+				margin-left: 0px;
 				box-shadow: none;
+
+				&:nth-child(2) {
+					margin: 0px 1px;
+				}
 			}
 		}
 
