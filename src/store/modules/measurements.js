@@ -16,6 +16,10 @@ export default {
 				if (!measurements[entry.measurement_id]) {
 					measurements[entry.measurement_id] = [];
 				}
+
+				//format all the values
+				entry.value = Vue.options.filters.toFixed(entry.value, 1);
+
 				measurements[entry.measurement_id].push(entry);
 			});
 

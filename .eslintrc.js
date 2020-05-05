@@ -34,7 +34,8 @@ module.exports = {
 		'import/extensions': 0,
 		'import/no-unresolved': 0,
 		'no-underscore-dangle': 0,
-		'object-curly-newline': 0
+		'object-curly-newline': 0,
+		'no-useless-escape': 0
 	},
 	//used together with the "vue/script-indent" rule
 	overrides: [

@@ -15,6 +15,7 @@
 
 	import errorsMap from '@/filters/errorsMap';
 	import date from '@/filters/date';
+	import toFixed from '@/filters/toFixed';
 	import FormButton from '@/components/forms/FormButton';
 	import FormInput from '@/components/forms/FormInput';
 	import FormDropdown from '@/components/forms/FormDropdown';
@@ -23,6 +24,7 @@
 
 	Vue.filter('errorsMap', errorsMap);
 	Vue.filter('date', date);
+	Vue.filter('toFixed', toFixed);
 	Vue.component('FormButton', FormButton);
 	Vue.component('FormInput', FormInput);
 	Vue.component('FormDropdown', FormDropdown);

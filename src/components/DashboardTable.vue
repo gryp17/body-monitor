@@ -29,8 +29,10 @@
 						{{ measurementUnit }}
 					</td>
 					<td>
-						dif
-						{{ measurementUnit }}
+						<span v-if="entry.diff">
+							{{ entry.diff }}
+							{{ measurementUnit }}
+						</span>
 					</td>
 				</tr>
 			</tbody>
@@ -70,7 +72,17 @@
 				return this.measurementsMap[this.measurementId].unit;
 			},
 			entries() {
-				const entries = [...this.groupedEntries[this.measurementId]].reverse();
+				const measurementEntries = [...this.groupedEntries[this.measurementId]].reverse();
+				const entries = measurementEntries.map((entry, index) => {
+					const prevEntry = measurementEntries[index + 1];
+
+					if (prevEntry) {
+						const diff = (entry.value - prevEntry.value);
+						entry.diff = this.$options.filters.toFixed(diff, 1);
+					}
+
+					return entry;
+				});
 				return entries;
 			}
 		},
