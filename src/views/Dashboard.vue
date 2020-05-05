@@ -2,11 +2,48 @@
 	<div class="dashboard-page">
 		<LoadingIndicator v-if="loading" />
 		<template v-else>
+			<!-- TODO: maybe check for entries as well -->
 			<div v-if="!measurements || measurements.length === 0" class="no-measurements">
 				Няма добавени мерки.
 			</div>
-
-			<DashboardChart />
+			<TabsNav v-else flex>
+				<template v-slot:items>
+					<li class="nav-item">
+						<a
+							class="nav-link active"
+							id="chart-tab"
+							data-toggle="tab"
+							href="#chart"
+							role="tab"
+							aria-controls="chart"
+							aria-selected="true"
+						>
+							Графика
+						</a>
+					</li>
+					<li class="nav-item">
+						<a
+							class="nav-link"
+							id="table-tab"
+							data-toggle="tab"
+							href="#table"
+							role="tab"
+							aria-controls="table"
+							aria-selected="true"
+						>
+							Таблица
+						</a>
+					</li>
+				</template>
+				<template v-slot:content>
+					<div class="tab-pane fade show active" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+						<DashboardChart />
+					</div>
+					<div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
+						table goes here
+					</div>
+				</template>
+			</TabsNav>
 
 			<hr />
 
@@ -28,12 +65,14 @@
 	import { mapState, mapActions } from 'vuex';
 	import AddMeasurementModal from '@/components/modals/AddMeasurementModal';
 	import AddEntryModal from '@/components/modals/AddEntryModal';
+	import TabsNav from '@/components/TabsNav';
 	import DashboardChart from '@/components/DashboardChart';
 
 	export default {
 		components: {
 			AddMeasurementModal,
 			AddEntryModal,
+			TabsNav,
 			DashboardChart
 		},
 		data() {

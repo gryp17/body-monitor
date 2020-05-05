@@ -39,7 +39,7 @@
 <style lang="scss">
 	.period-selector {
 		margin: auto;
-		margin-bottom: 40px;
+		margin: 40px auto;
 		width: 60%;
 
 		.btn-group {
