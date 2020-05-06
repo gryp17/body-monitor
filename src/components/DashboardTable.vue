@@ -29,10 +29,7 @@
 						{{ measurementUnit }}
 					</td>
 					<td>
-						<span v-if="entry.diff">
-							{{ entry.diff }}
-							{{ measurementUnit }}
-						</span>
+						<EntryDiff :diff="entry.diff" :unit="measurementUnit" />
 					</td>
 				</tr>
 			</tbody>
@@ -42,8 +39,12 @@
 
 <script>
 	import { mapState, mapGetters } from 'vuex';
+	import EntryDiff from '@/components/EntryDiff';
 
 	export default {
+		components: {
+			EntryDiff
+		},
 		data() {
 			return {
 				measurementId: null

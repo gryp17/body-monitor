@@ -7,5 +7,5 @@
  */
 export default (num, fixed = -1) => {
 	const re = new RegExp(`^-?\\d+(?:\.\\d{0,${fixed}})?`);
-	return num.toString().match(re)[0];
+	return parseFloat(num.toString().match(re)[0]);
 };
