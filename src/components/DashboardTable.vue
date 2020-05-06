@@ -17,6 +17,9 @@
 					<th scope="col">
 						Разлика
 					</th>
+					<th scope="col">
+						Изтрий
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,6 +33,15 @@
 					</td>
 					<td>
 						<EntryDiff :diff="entry.diff" :unit="measurementUnit" />
+					</td>
+					<td>
+						<FormButton
+							transparent
+							@click="deleteEntry(entry.id)"
+							class="delete-btn"
+						>
+							<i class="fas fa-times"></i>
+						</FormButton>
 					</td>
 				</tr>
 			</tbody>
@@ -90,6 +102,12 @@
 		created() {
 			this.measurementId = this.measurements[0].id;
 			//this.goToPage(1);
+		},
+		methods: {
+			deleteEntry(id) {
+				//TODO: implement
+				console.log('DELETE ', id);
+			}
 		}
 	};
 </script>
@@ -101,9 +119,45 @@
 			width: 40%;
 		}
 
+		.form-button.delete-btn {
+			padding: 0px 20px;
+			color: $red;
+			font-size: 24px;
+
+			&:hover, &:active, &:focus {
+				color: darken($red, 15%);
+			}
+		}
+
+		table {
+			td, th {
+				&:last-child {
+					width: 100px;
+					text-align :center;
+				}
+			}
+
+			td {
+				&:last-child {
+					padding: 0px;
+					vertical-align: middle;
+				}
+			}
+		}
+
 		@include media-breakpoint-down(sm) {
 			.form-dropdown {
 				width: 100%;
+			}
+		}
+
+		@include media-breakpoint-down(xs) {
+			table {
+				td, th {
+					&:last-child {
+						display: none;
+					}
+				}
 			}
 		}
 	}
