@@ -5,7 +5,10 @@
 			:options="measurementOptions"
 		/>
 
-		<table class="table">
+		<div v-if="totalPages === 0" class="no-data">
+			<h4>Няма данни</h4>
+		</div>
+		<table v-else class="table">
 			<thead>
 				<tr>
 					<th scope="col">
@@ -23,7 +26,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="entry in entries" :key="entry.id">
+				<tr v-for="entry in pageEntries" :key="entry.id">
 					<td>
 						{{ entry.date | date('YYYY-MM-DD') }}
 					</td>
@@ -46,21 +49,40 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<Pagination
+			v-show="totalPages > 1"
+			:total-pages="totalPages"
+			:current-page="page"
+			@change-page="setPage"
+		/>
 	</div>
 </template>
 
 <script>
 	import { mapState, mapGetters } from 'vuex';
 	import EntryDiff from '@/components/EntryDiff';
+	import Pagination from '@/components/Pagination';
 
 	export default {
 		components: {
-			EntryDiff
+			EntryDiff,
+			Pagination
 		},
 		data() {
 			return {
-				measurementId: null
+				measurementId: null,
+				perPage: 10,
+				page: 0
 			};
+		},
+		watch: {
+			measurementId() {
+				this.page = 0;
+			},
+			groupedEntries() {
+				this.page = 0;
+			}
 		},
 		computed: {
 			...mapState('measurements', [
@@ -85,6 +107,10 @@
 				return this.measurementsMap[this.measurementId].unit;
 			},
 			entries() {
+				if (!this.groupedEntries[this.measurementId]) {
+					return [];
+				}
+
 				const measurementEntries = [...this.groupedEntries[this.measurementId]].reverse();
 				const entries = measurementEntries.map((entry, index) => {
 					const prevEntry = measurementEntries[index + 1];
@@ -97,16 +123,24 @@
 					return entry;
 				});
 				return entries;
+			},
+			pageEntries() {
+				return this.entries.slice((this.page) * this.perPage, (this.page + 1) * this.perPage);
+			},
+			totalPages() {
+				return Math.ceil(this.entries.length / this.perPage);
 			}
 		},
 		created() {
 			this.measurementId = this.measurements[0].id;
-			//this.goToPage(1);
 		},
 		methods: {
 			deleteEntry(id) {
 				//TODO: implement
 				console.log('DELETE ', id);
+			},
+			setPage(page) {
+				this.page = page;
 			}
 		}
 	};
@@ -119,10 +153,16 @@
 			width: 40%;
 		}
 
+		.no-data {
+			margin-bottom: 40px;
+			text-align: center;
+		}
+
 		.form-button.delete-btn {
 			padding: 0px 20px;
 			color: $red;
 			font-size: 24px;
+			cursor: pointer;
 
 			&:hover, &:active, &:focus {
 				color: darken($red, 15%);
