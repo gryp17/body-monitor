@@ -1,6 +1,8 @@
 <template>
 	<div :class="['entry-diff', diffType]">
-		<i v-if="absoluteDiff !== 0" class="fas fa-caret-down"></i>
+		<span v-if="showArrow">
+			<i class="fas fa-caret-down"></i>
+		</span>
 		{{ absoluteDiff }}
 		{{ unit }}
 	</div>
@@ -25,6 +27,9 @@
 			},
 			absoluteDiff() {
 				return Math.abs(this.diff);
+			},
+			showArrow() {
+				return this.absoluteDiff !== 0;
 			}
 		}
 	};
@@ -38,6 +43,7 @@
 		svg {
 			margin-right: 5px;
 			font-size: 24px;
+			vertical-align: top;
 		}
 
 		&.positive {

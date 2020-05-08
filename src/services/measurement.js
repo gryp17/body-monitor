@@ -21,6 +21,11 @@ export default {
 			value
 		});
 	},
+	deleteMeasurementEntry(entryId) {
+		return API.post('/Measurement/deleteMeasurementEntry', {
+			entryId
+		});
+	},
 	getMeasurementEntries() {
 		return API.get('/Measurement/getMeasurementEntries');
 	}

@@ -53,6 +53,14 @@ export default {
 		},
 		setEntries(state, entries) {
 			state.entries = entries;
+		},
+		addEntry(state, entry) {
+			state.entries.push(entry);
+		},
+		deleteEntry(state, id) {
+			state.entries = state.entries.filter((entry) => {
+				return entry.id !== id;
+			});
 		}
 	},
 	actions: {
@@ -94,8 +102,20 @@ export default {
 		},
 		addMeasurementEntry(context, { measurementId, date, value }) {
 			return MeasurementHttpService.addMeasurementEntry(measurementId, date, value).then((res) => {
-				if (!res.data.error) {
-					context.dispatch('getMeasurementEntries');
+				if (res.data.entry) {
+					context.commit('addEntry', res.data.entry);
+				}
+				return res;
+			}).catch((error) => {
+				Vue.toasted.global.apiError({
+					message: `addMeasurementEntry failed - ${error}`
+				});
+			});
+		},
+		deleteMeasurementEntry(context, entryId) {
+			return MeasurementHttpService.deleteMeasurementEntry(entryId).then((res) => {
+				if (res.data.success) {
+					context.commit('deleteEntry', entryId);
 				}
 				return res;
 			}).catch((error) => {

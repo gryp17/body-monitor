@@ -40,7 +40,7 @@
 					<td>
 						<FormButton
 							transparent
-							@click="deleteEntry(entry.id)"
+							@click="deleteMeasurementEntry(entry.id)"
 							class="delete-btn"
 						>
 							<i class="fas fa-times"></i>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-	import { mapState, mapGetters } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import EntryDiff from '@/components/EntryDiff';
 	import Pagination from '@/components/Pagination';
 
@@ -111,7 +111,9 @@
 					return [];
 				}
 
-				const measurementEntries = [...this.groupedEntries[this.measurementId]].reverse();
+				//make a deep copy... (no - array spreading doesn't work)
+				const measurementEntries = JSON.parse(JSON.stringify(this.groupedEntries[this.measurementId])).reverse();
+
 				const entries = measurementEntries.map((entry, index) => {
 					const prevEntry = measurementEntries[index + 1];
 
@@ -135,10 +137,9 @@
 			this.measurementId = this.measurements[0].id;
 		},
 		methods: {
-			deleteEntry(id) {
-				//TODO: implement
-				console.log('DELETE ', id);
-			},
+			...mapActions('measurements', [
+				'deleteMeasurementEntry'
+			]),
 			setPage(page) {
 				this.page = page;
 			}

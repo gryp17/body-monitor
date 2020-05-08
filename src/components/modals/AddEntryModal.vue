@@ -139,7 +139,7 @@
 				this.addMeasurementEntry(params).then((res) => {
 					const data = res.data;
 
-					if (data.success) {
+					if (data.entry) {
 						this.hideAddEntryModal();
 					} else if (data.error) {
 						this.setFormError({
