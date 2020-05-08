@@ -25,8 +25,7 @@
 		},
 		computed: {
 			...mapState('measurements', [
-				'measurements',
-				'entries'
+				'measurements'
 			]),
 			...mapGetters('measurements', [
 				'measurementsMap',
@@ -179,3 +178,12 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.dashboard-chart {
+		.chartjs-render-monitor {
+			//this fixes an issue with the chart height not updating correctly if it's not currently visible
+			height: 400px !important;
+		}
+	}
+</style>
