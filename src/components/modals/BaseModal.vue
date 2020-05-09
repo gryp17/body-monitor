@@ -75,32 +75,36 @@
 
 <style scoped lang="scss">
 	.base-modal {
-		.modal-content {
+		.modal {
+			padding-right: 0px !important;
 
-			.modal-header {
-				border-bottom: solid 2px $blue;
-				background-color: $blue;
-				color: $white;
+			.modal-content {
 
-				.close {
+				.modal-header {
+					border-bottom: solid 2px $blue;
+					background-color: $blue;
 					color: $white;
-					opacity: 1;
-					line-height: 30px;
+
+					.close {
+						color: $white;
+						opacity: 1;
+						line-height: 30px;
+					}
 				}
 			}
-		}
 
-		@include media-breakpoint-down(xs) {
-			.modal-content {
-				border-radius: 0px;
-			}
+			@include media-breakpoint-down(xs) {
+				.modal-content {
+					border-radius: 0px;
+				}
 
-			.modal-header {
-				border-radius: 0px;
-			}
+				.modal-header {
+					border-radius: 0px;
+				}
 
-			.modal-dialog {
-				margin: 0px;
+				.modal-dialog {
+					margin: 0px;
+				}
 			}
 		}
 	}
