@@ -48,6 +48,11 @@
 			.btn {
 				margin-left: 0px;
 				box-shadow: none;
+				opacity: 0.8;
+
+				&.active {
+					opacity: 1;
+				}
 
 				&:nth-child(2) {
 					margin: 0px 1px;
