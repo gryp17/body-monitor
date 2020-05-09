@@ -5,6 +5,7 @@ import authModule from '@/store/modules/auth';
 import measurementsModule from '@/store/modules/measurements';
 import formsModule from '@/store/modules/forms';
 import modalsModule from '@/store/modules/modals';
+import uiModule from '@/store/modules/ui';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
 		auth: authModule,
 		measurements: measurementsModule,
 		forms: formsModule,
-		modals: modalsModule
+		modals: modalsModule,
+		ui: uiModule
 	},
 	state: {
 		...config

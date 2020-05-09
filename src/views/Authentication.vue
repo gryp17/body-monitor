@@ -1,5 +1,9 @@
 <template>
 	<div class="authentication-page">
+		<h4>
+			Body Monitor
+		</h4>
+
 		<TabsNav flex>
 			<template v-slot:items>
 				<li class="nav-item">
@@ -59,6 +63,11 @@
 	.authentication-page {
 		margin: auto;
 		width: 60%;
+
+		h4 {
+			margin: 20px;
+			text-align: center;
+		}
 
 		.tab-content {
 			padding: 15px 0px;

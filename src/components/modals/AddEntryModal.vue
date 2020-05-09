@@ -4,7 +4,7 @@
 		<BaseModal :visible="visible" @hidden="hideAddEntryModal">
 			<template v-slot:header>
 				<h5 class="modal-title">
-					Добави данни
+					Добави запис
 				</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>

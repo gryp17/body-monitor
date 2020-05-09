@@ -2,6 +2,8 @@
 	<div class="dashboard-page">
 		<LoadingIndicator v-if="loading" />
 		<template v-else>
+			<MainMenu />
+
 			<!-- TODO: maybe check for entries as well -->
 			<div v-if="!measurements || measurements.length === 0" class="no-measurements">
 				Няма добавени мерки.
@@ -44,16 +46,6 @@
 					</div>
 				</template>
 			</TabsNav>
-
-			<hr />
-
-			<FormButton @click="showAddMeasurementModal">
-				Добави мерки
-			</FormButton>
-
-			<FormButton v-show="measurements && measurements.length > 0" @click="showAddEntryModal">
-				Добави данни
-			</FormButton>
 		</template>
 
 		<AddMeasurementModal />
@@ -63,6 +55,7 @@
 
 <script>
 	import { mapState, mapActions } from 'vuex';
+	import MainMenu from '@/components/MainMenu';
 	import AddMeasurementModal from '@/components/modals/AddMeasurementModal';
 	import AddEntryModal from '@/components/modals/AddEntryModal';
 	import TabsNav from '@/components/TabsNav';
@@ -71,6 +64,7 @@
 
 	export default {
 		components: {
+			MainMenu,
 			AddMeasurementModal,
 			AddEntryModal,
 			TabsNav,
@@ -101,10 +95,6 @@
 			...mapActions('measurements', [
 				'getMeasurements',
 				'getMeasurementEntries'
-			]),
-			...mapActions('modals', [
-				'showAddMeasurementModal',
-				'showAddEntryModal'
 			])
 		}
 	};
