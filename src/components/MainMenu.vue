@@ -22,7 +22,7 @@
 				class="option"
 			>
 				<i class="fas fa-weight"></i>
-				Добави мерки
+				Добави нов тип мерки
 			</FormButton>
 
 			<FormButton
@@ -136,13 +136,13 @@
 			}
 		}
 
-		@include media-breakpoint-up(sm) {
+		@include media-breakpoint-up(md) {
 			.sections {
 				display: flex !important;
 			}
 		}
 
-		@include media-breakpoint-down(xs) {
+		@include media-breakpoint-down(sm) {
 			display: block;
 			margin-bottom: 10px;
 
