@@ -9,7 +9,7 @@
 <script>
 	import Vue from 'vue';
 	import moment from 'moment';
-	import { mapState, mapGetters } from 'vuex';
+	import { mapGetters } from 'vuex';
 	import LineChart from '@/components/LineChart';
 	import PeriodSelector from '@/components/PeriodSelector';
 
@@ -24,9 +24,6 @@
 			};
 		},
 		computed: {
-			...mapState('measurements', [
-				'measurements'
-			]),
 			...mapGetters('measurements', [
 				'measurementsMap',
 				'groupedEntries'
@@ -47,10 +44,6 @@
 					//group the entries by month if necessary
 					measurements[measurementId] = this.selectedPeriod === 'year' ? this.groupByMonth(entries) : entries;
 				});
-
-				console.log('----------------------');
-				console.log(this.minDate);
-				console.log(measurements);
 
 				return measurements;
 			},
