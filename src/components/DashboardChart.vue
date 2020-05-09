@@ -33,7 +33,7 @@
 			]),
 			minDate() {
 				const currentDate = moment();
-				return currentDate.subtract(1, this.selectedPeriod);
+				return currentDate.subtract(1, this.selectedPeriod).startOf('day');
 			},
 			groupedMeasurementData() {
 				const measurements = { ...this.groupedEntries };
@@ -47,6 +47,10 @@
 					//group the entries by month if necessary
 					measurements[measurementId] = this.selectedPeriod === 'year' ? this.groupByMonth(entries) : entries;
 				});
+
+				console.log('----------------------');
+				console.log(this.minDate);
+				console.log(measurements);
 
 				return measurements;
 			},
