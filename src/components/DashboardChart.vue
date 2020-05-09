@@ -181,6 +181,8 @@
 
 <style lang="scss">
 	.dashboard-chart {
+		margin-bottom: 10px;
+
 		.chartjs-render-monitor {
 			//this fixes an issue with the chart height not updating correctly if it's not currently visible
 			height: 400px !important;
