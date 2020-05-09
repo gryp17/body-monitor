@@ -4,9 +4,7 @@
 			<i class="fas fa-bars"></i>
 		</button>
 
-		<h4>
-			Body Monitor
-		</h4>
+		<Header />
 
 		<div ref="sections" class="sections">
 			<FormButton
@@ -43,9 +41,14 @@
 	import { mapActions, mapState } from 'vuex';
 	import $ from 'jquery';
 
+	import Header from '@/components/Header';
+
 	const SLIDE_DURATION = 300;
 
 	export default {
+		components: {
+			Header
+		},
 		data() {
 			return {
 				sections: [
@@ -100,10 +103,9 @@
 		position: relative;
 		min-height: 70px;
 
-		h4 {
+		.header {
 			line-height: 70px;
 			margin-bottom: 0px;
-			text-align: center;
 		}
 
 		.sections {
@@ -148,7 +150,6 @@
 				display: none;
 				flex-direction: column;
 				margin: 0px;
-				padding-left: 10px;
 				padding-bottom: 10px;
 
 				.option {

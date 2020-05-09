@@ -1,8 +1,6 @@
 <template>
 	<div class="authentication-page">
-		<h4>
-			Body Monitor
-		</h4>
+		<Header />
 
 		<TabsNav flex>
 			<template v-slot:items>
@@ -46,6 +44,7 @@
 </template>
 
 <script>
+	import Header from '@/components/Header';
 	import TabsNav from '@/components/TabsNav';
 	import LoginForm from '@/components/LoginForm';
 	import SignupForm from '@/components/SignupForm';
@@ -54,7 +53,8 @@
 		components: {
 			TabsNav,
 			LoginForm,
-			SignupForm
+			SignupForm,
+			Header
 		}
 	};
 </script>
@@ -64,9 +64,8 @@
 		margin: auto;
 		width: 60%;
 
-		h4 {
+		.header {
 			margin: 20px;
-			text-align: center;
 		}
 
 		.tab-content {
