@@ -14,30 +14,29 @@
 
 				<div class="form-wrapper">
 
-					<FormDropdown
-						v-model="measurementId"
-						:options="measurementOptions"
-						:error="errors.measurementId"
-						@focus="clearError"
-						name="measurementId"
-					/>
+					<div class="datepicker-wrapper">
+						<i class="far fa-calendar-alt"></i>
+						<FormDatepicker
+							v-model="date"
+							:error="errors.date"
+							@focus="clearError"
+							name="date"
+							floating-label
+							placeholder="Дата"
+						/>
+					</div>
 
-					<FormDatepicker
-						v-model="date"
-						:error="errors.date"
-						@focus="clearError"
-						name="date"
-						floating-label
-						placeholder="Дата"
-					/>
+					<hr />
 
 					<FormInput
-						v-model="value"
-						:placeholder="valueFieldPlaceholder"
-						:error="errors.value"
+						v-for="measurement in measurements"
+						:key="measurement.id"
+						v-model="values[measurement.id]"
+						:name="measurement.id + ''"
+						:placeholder="fieldPlaceholder(measurement)"
+						:error="errors[measurement.id]"
 						@focus="clearError"
 						type="text"
-						name="value"
 						floating-label
 					/>
 
@@ -67,7 +66,7 @@
 			return {
 				measurementId: null,
 				date: new Date(),
-				value: '',
+				values: {},
 				submitting: false
 			};
 		},
@@ -84,14 +83,6 @@
 			...mapGetters('measurements', [
 				'measurementsMap'
 			]),
-			measurementOptions() {
-				const options = {};
-				this.measurements.forEach((measurement) => {
-					options[measurement.id] = measurement.name;
-				});
-
-				return options;
-			},
 			valueFieldPlaceholder() {
 				if (!this.measurements || this.measurements.length === 0 || !this.measurementId) {
 					return 'Стойност';
@@ -121,8 +112,12 @@
 				'resetFormErrors'
 			]),
 			...mapActions('measurements', [
-				'addMeasurementEntry'
+				'addMeasurementEntries'
 			]),
+			fieldPlaceholder(measurement) {
+				const unit = this.measurementsMap[measurement.id].unit;
+				return `${measurement.name} (${unit})`;
+			},
 			submit() {
 				if (this.submitting) {
 					return;
@@ -131,15 +126,14 @@
 				this.submitting = true;
 
 				const params = {
-					measurementId: this.measurementId,
 					date: this.$options.filters.date(this.date, 'YYYY-MM-DD HH:mm:ss'),
-					value: this.value
+					values: this.values
 				};
 
-				this.addMeasurementEntry(params).then((res) => {
+				this.addMeasurementEntries(params).then((res) => {
 					const data = res.data;
 
-					if (data.entry) {
+					if (data.entries) {
 						this.hideAddEntryModal();
 					} else if (data.error) {
 						this.setFormError({
@@ -175,7 +169,7 @@
 
 <style lang="scss">
 	.add-entry-modal {
-		$max-width: 650px;
+		$max-width: 380px;
 
 		.modal-dialog {
 			max-width: $max-width;
@@ -187,25 +181,29 @@
 		}
 
 		.form-wrapper {
-			display: flex;
+			.datepicker-wrapper {
+				display: flex;
 
-			.form-input, .form-dropdown, .form-datepicker {
-				flex: 1;
-				margin-right: 5px;
+				svg {
+					margin: 10px 10px 0px 0px;
+					font-size: 23px;
+				}
+
+				.form-datepicker {
+					flex: 1;
+					margin-bottom: 0px;
+				}
 			}
 
 			.form-button {
-				margin-bottom: 16px;
+				display: block;
+				margin: auto;
 			}
 		}
 
-		@include media-breakpoint-down(sm) {
-			.form-wrapper {
-				flex-direction: column;
-
-				.form-input, .form-dropdown, .form-datepicker {
-					margin-right: 0px;
-				}
+		@include media-breakpoint-down(xs) {
+			.modal-dialog {
+				max-width: 100%;
 			}
 		}
 	}

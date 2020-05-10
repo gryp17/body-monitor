@@ -61,6 +61,9 @@ export default {
 		addEntry(state, entry) {
 			state.entries.push(entry);
 		},
+		addEntries(state, entries) {
+			state.entries = state.entries.concat(entries);
+		},
 		deleteEntry(state, id) {
 			state.entries = state.entries.filter((entry) => {
 				return entry.id !== id;
@@ -104,10 +107,10 @@ export default {
 				});
 			});
 		},
-		addMeasurementEntry(context, { measurementId, date, value }) {
-			return MeasurementHttpService.addMeasurementEntry(measurementId, date, value).then((res) => {
-				if (res.data.entry) {
-					context.commit('addEntry', res.data.entry);
+		addMeasurementEntries(context, { date, values }) {
+			return MeasurementHttpService.addMeasurementEntries(date, values).then((res) => {
+				if (res.data.entries) {
+					context.commit('addEntries', res.data.entries);
 				}
 				return res;
 			}).catch((error) => {

@@ -14,11 +14,10 @@ export default {
 			type
 		});
 	},
-	addMeasurementEntry(measurementId, date, value) {
-		return API.post('/Measurement/addMeasurementEntry', {
-			measurementId,
+	addMeasurementEntries(date, values) {
+		return API.post('/Measurement/addMeasurementEntries', {
 			date,
-			value
+			values
 		});
 	},
 	deleteMeasurementEntry(entryId) {
