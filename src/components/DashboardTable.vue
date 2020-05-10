@@ -9,7 +9,7 @@
 			<h4>Няма данни</h4>
 		</div>
 		<table v-else class="table">
-			<thead>
+			<thead class="thead-light">
 				<tr>
 					<th scope="col">
 						Дата
@@ -139,6 +139,10 @@
 			...mapActions('measurements', [
 				'deleteMeasurementEntry'
 			]),
+			/**
+			 * Sets the current page
+			 * @param {Number} page
+			 */
 			setPage(page) {
 				this.page = page;
 			}

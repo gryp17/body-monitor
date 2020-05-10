@@ -114,10 +114,18 @@
 			...mapActions('measurements', [
 				'addMeasurementEntries'
 			]),
+			/**
+			 * Builds the measurement placeholder
+			 * @param {Object} measurement
+			 * @returns {String}
+			 */
 			fieldPlaceholder(measurement) {
 				const unit = this.measurementsMap[measurement.id].unit;
 				return `${measurement.name} (${unit})`;
 			},
+			/**
+			 * Submits the form data
+			 */
 			submit() {
 				if (this.submitting) {
 					return;
@@ -169,7 +177,7 @@
 
 <style lang="scss">
 	.add-entry-modal {
-		$max-width: 380px;
+		$max-width: 450px;
 
 		.modal-dialog {
 			max-width: $max-width;

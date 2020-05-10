@@ -29,6 +29,10 @@
 			};
 		},
 		methods: {
+			/**
+			 * Emits the 'input' event
+			 * @param {String} period
+			 */
 			onSelect(period) {
 				this.$emit('input', period);
 			}

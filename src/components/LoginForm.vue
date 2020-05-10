@@ -62,6 +62,9 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			/**
+			 * Submits the form data
+			 */
 			submit() {
 				if (this.submitting) {
 					return;

@@ -68,7 +68,7 @@ export default {
 			});
 		},
 		/**
-		 * Signs up the user
+		 * Signs up and logins the newly created user
 		 * @param {Object} context
 		 * @param {Object} data
 		 * @returns {Promise}

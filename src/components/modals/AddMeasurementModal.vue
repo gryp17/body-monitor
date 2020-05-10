@@ -98,6 +98,9 @@
 			...mapActions('measurements', [
 				'addMeasurement'
 			]),
+			/**
+			 * Submits the form data
+			 */
 			submit() {
 				if (this.submitting) {
 					return;

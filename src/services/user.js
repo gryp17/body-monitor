@@ -30,13 +30,9 @@ export default {
 	},
 	/**
 	 * Signs up the user
-	 * @param {String} username
 	 * @param {String} email
 	 * @param {String} password
 	 * @param {String} repeatPassword
-	 * @param {Object} birthday
-	 * @param {String} gender
-	 * @param {String} captcha
 	 * @returns {Promise}
 	 */
 	signup(email, password, repeatPassword) {

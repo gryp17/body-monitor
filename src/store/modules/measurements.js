@@ -71,6 +71,11 @@ export default {
 		}
 	},
 	actions: {
+		/**
+		 * Fetches the measurement units
+		 * @param {Object} context
+		 * @returns {Promise}
+		 */
 		getUnits(context) {
 			return MeasurementHttpService.getUnits().then((res) => {
 				if (res.data && res.data) {
@@ -83,6 +88,11 @@ export default {
 				});
 			});
 		},
+		/**
+		 * Fetches the user measurements
+		 * @param {Object} context
+		 * @returns {Promise}
+		 */
 		getMeasurements(context) {
 			return MeasurementHttpService.getMeasurements().then((res) => {
 				if (res.data && res.data) {
@@ -95,6 +105,12 @@ export default {
 				});
 			});
 		},
+		/**
+		 * Adds new measurement
+		 * @param {Object} context
+		 * @param {Object} data
+		 * @returns {Promise}
+		 */
 		addMeasurement(context, { name, type }) {
 			return MeasurementHttpService.addMeasurement(name, type).then((res) => {
 				if (!res.data.error) {
@@ -107,6 +123,12 @@ export default {
 				});
 			});
 		},
+		/**
+		 * Adds new measurement entries
+		 * @param {Object} context
+		 * @param {Object} data
+		 * @returns {Promise}
+		 */
 		addMeasurementEntries(context, { date, values }) {
 			return MeasurementHttpService.addMeasurementEntries(date, values).then((res) => {
 				if (res.data.entries) {
@@ -119,6 +141,12 @@ export default {
 				});
 			});
 		},
+		/**
+		 * Deletes a measurement entry
+		 * @param {Object} context
+		 * @param {Number} entryId
+		 * @returns {Promise}
+		 */
 		deleteMeasurementEntry(context, entryId) {
 			return MeasurementHttpService.deleteMeasurementEntry(entryId).then((res) => {
 				if (res.data.success) {
@@ -131,6 +159,11 @@ export default {
 				});
 			});
 		},
+		/**
+		 * Fetches the user measurement entries
+		 * @param {Object} context
+		 * @returns {Promise}
+		 */
 		getMeasurementEntries(context) {
 			return MeasurementHttpService.getMeasurementEntries().then((res) => {
 				if (res.data && res.data) {

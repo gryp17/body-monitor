@@ -115,18 +115,33 @@
 			}
 		},
 		methods: {
+			/**
+			 * Returns the measurement name
+			 * @param {Number} id
+			 * @returns {String}
+			 */
 			measurementName(id) {
 				if (!this.measurementsMap[id]) {
 					return;
 				}
 				return this.measurementsMap[id].name;
 			},
+			/**
+			 * Returns the measurement unit
+			 * @param {Number} id
+			 * @returns {String}
+			 */
 			measurementUnit(id) {
 				if (!this.measurementsMap[id]) {
 					return;
 				}
 				return this.measurementsMap[id].unit;
 			},
+			/**
+			 * Returns the measurement color based on it's index
+			 * @param {Number} index
+			 * @returns {String}
+			 */
 			measurementColor(index) {
 				const colors = [
 					'#e53935',
@@ -143,6 +158,13 @@
 
 				return colors[index % colors.length];
 			},
+			/**
+			 * Formats the date accordingly
+			 * @param {String} label
+			 * @param {Number} index
+			 * @param {Array} labels
+			 * @returns {String}
+			 */
 			mapLabels(label, index, labels) {
 				const formats = {
 					week: 'D MMMM (dd)',
