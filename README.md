@@ -1,5 +1,6 @@
 # body-monitor
-Web app for logging weight and other body measures 
+Web app for logging weight and other body measures.
+It uses the [body monitor API](https://github.com/gryp17/body-monitor-api).
 
 ## Project setup
 ```
