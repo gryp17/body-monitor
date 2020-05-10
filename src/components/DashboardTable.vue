@@ -86,8 +86,7 @@
 		},
 		computed: {
 			...mapState('measurements', [
-				'measurements',
-				'entries'
+				'measurements'
 			]),
 			...mapGetters('measurements', [
 				'measurementsMap',

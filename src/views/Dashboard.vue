@@ -4,11 +4,7 @@
 		<template v-else>
 			<MainMenu />
 
-			<!-- TODO: maybe check for entries as well -->
-			<div v-if="!measurements || measurements.length === 0" class="no-measurements">
-				Няма добавени мерки.
-			</div>
-			<TabsNav v-else flex>
+			<TabsNav flex>
 				<template v-slot:items>
 					<li class="nav-item">
 						<a
@@ -54,7 +50,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from 'vuex';
+	import { mapActions } from 'vuex';
 	import MainMenu from '@/components/MainMenu';
 	import AddMeasurementModal from '@/components/modals/AddMeasurementModal';
 	import AddEntryModal from '@/components/modals/AddEntryModal';
@@ -76,13 +72,6 @@
 				loading: true
 			};
 		},
-		computed: {
-			...mapState('measurements', [
-				'units',
-				'measurements',
-				'entries'
-			])
-		},
 		created() {
 			Promise.all([
 				this.getMeasurements(),
@@ -99,13 +88,3 @@
 		}
 	};
 </script>
-
-<style scoped lang="scss">
-	.dashboard-page {
-		.no-measurements {
-			text-align: center;
-			font-size: 20px;
-			font-weight: bold;
-		}
-	}
-</style>

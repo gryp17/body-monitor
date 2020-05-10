@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import moment from 'moment';
 import MeasurementHttpService from '@/services/measurement';
 
 export default {
@@ -12,7 +13,10 @@ export default {
 		groupedEntries(state) {
 			const measurements = {};
 
-			state.entries.forEach((entry) => {
+			//sort all entries by date before grouping them
+			state.entries.sort((a, b) => {
+				return moment(a.date) - moment(b.date);
+			}).forEach((entry) => {
 				if (!measurements[entry.measurement_id]) {
 					measurements[entry.measurement_id] = [];
 				}
