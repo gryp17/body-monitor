@@ -69,7 +69,7 @@
 				width: 14px;
 				height: 14px;
 				padding: 0 0 2px;
-				background: url('/img/arrow.png');
+				background: url('../../assets/img/arrow.png');
 				background-size: 100%;
 				transform: rotate(90deg);
 				filter: brightness(30%);
