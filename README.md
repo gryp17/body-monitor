@@ -41,12 +41,12 @@ npm run lint
    Examples:
    
   ```
-  #http://body-monitor.com
+  //http://body-monitor.com
   publicPath: ''
   ```
   
   ```
-  #localhost/body-monitor
+  //localhost/body-monitor
   publicPath: '/body-monitor'
   ```
 
