@@ -117,7 +117,7 @@
 					const prevEntry = measurementEntries[index + 1];
 
 					if (prevEntry) {
-						const diff = (entry.value - prevEntry.value);
+						const diff = (entry.value - prevEntry.value).toFixed(1);
 						entry.diff = this.$options.filters.toFixed(diff, 1);
 					}
 
